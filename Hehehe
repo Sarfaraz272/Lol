@@ -1,0 +1,93 @@
+-- Load the WindUI library
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+-- Function to apply gradient effect to text
+function gradient(text, startColor, endColor)
+    local result = ""
+    local length = #text
+
+    for i = 1, length do
+        local t = (i - 1) / math.max(length - 1, 1)
+        local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
+        local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
+        local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
+
+        local char = text:sub(i, i)
+        result = result .. "<font color=\"rgb(" .. r .. "," .. g .. "," .. b .. ")\">" .. char .. "</font>"
+    end
+
+    return result
+end
+
+local Confirmed = false
+
+-- Set transparency for the UI
+WindUI:GetTransparency(true) -- Enable transparency globally
+
+-- Display a popup with dark theme and transparency
+WindUI:Popup({
+    Title = "Welcome to Stand Awakening!",
+    Icon = "info",
+    Content = "This is an Example UI for the " .. gradient("WindUI", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")) .. " Lib",
+    Theme = "Dark",
+    Buttons = {
+        {
+            Title = "Cancel",
+            Callback = function() end,
+            Variant = "Secondary",
+            Color = Color3.fromHex("#555555"),
+        },
+        {
+            Title = "Continue",
+            Icon = "arrow-right",
+            Callback = function() Confirmed = true end,
+            Variant = "Primary",
+            Color = Color3.fromHex("#00FF87"),
+        }
+    }
+})
+
+-- Wait until the user clicks 'Continue'
+repeat task.wait() until Confirmed
+
+-- Create a window with dark theme and transparency
+local Window = WindUI:CreateWindow({
+    Title = "LoxForgeUI",
+    Icon = "door-open",
+    Author = "Stand Awakening Team",
+    Folder = "CloudHub",
+    Size = UDim2.fromOffset(580, 460),
+    Transparent = true, -- Reinforce transparency setting
+    Theme = "Dark",
+    User = {
+        Enabled = true,
+        Callback = function() print("User icon clicked") end,
+        Anonymous = true,
+    },
+    SideBarWidth = 200,
+    HasOutline = true,
+    KeySystem = { 
+        Key = { "1234", "5678" },
+        Note = "Example Key System.\n\nThe Key is '1234' or '5678'",
+        URL = "https://github.com/Footagesus/WindUI",
+        SaveKey = true,
+    },
+})
+
+-- Optional: Set a subtle background image for dark theme (uncomment if desired)
+-- Window:SetBackgroundImage("rbxassetid://13511292247")
+
+-- Create an editable open button with dark theme and transparency
+Window:EditOpenButton({
+    Title = "Open Stand Awakening UI",
+    Icon = "monitor",
+    CornerRadius = UDim.new(0, 16),
+    StrokeThickness = 2,
+    Color = ColorSequence.new( 
+        Color3.fromHex("#FF0F7B"), 
+        Color3.fromHex("#F89B29")
+    ),
+    BackgroundColor = Color3.fromHex("#1E1E1E"),
+    TextColor = Color3.fromHex("#FFFFFF"),
+    Draggable = true,
+})
